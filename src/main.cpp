@@ -68,7 +68,7 @@ int main() {
 
     // scene
     Scene scene(45);
-    scene.camera.transform.position = { 0, -1.5, -6 };
+    scene.camera.transform.position = { -5, 1, -10 };
     scene.camera.transform.rotation = { 0, 0, 1, 0 };
     scene.light_position = { 0, 3, -10 };
     scene.light_color = Vec3(1, 1, 1) * Float(1.125);
@@ -76,18 +76,18 @@ int main() {
     // mesh primitives
     auto mesh_cube = std::make_shared<Mesh>(MeshPrimitiveType::cube);
 
-    auto object_cube1 = scene.AddObject(mesh_cube,
-                                       Shader::shader_phong,
-                                       Transform(Vec3(-3.5, -1.8, 0.3),
-                                                 Quat(1, 0, 0, 0),
-                                                 Vec3(10, 0.1, 10)));
+    //auto object_cube1 = scene.AddObject(mesh_cube,
+    //                                   Shader::shader_phong,
+    //                                   Transform(Vec3(-3.5, -1.8, 0.3),
+    //                                             Quat(1, 0, 0, 0),
+    //                                             Vec3(10, 0.1, 10)));
     auto object_cube2 = scene.AddObject(mesh_cube,
         Shader::shader_phong,
-        Transform(Vec3(0, 0, 0.3),
-            Quat(1, 0, 0, 0.3),
-            Vec3(5, 0.1, 10)));
+        Transform(Vec3(-5, 0, 0),
+            Quat(1, 0, 0, 0),
+            Vec3(10, 0.1, 10)));
     object_cube2->color = { Float(0.75), one, zero };
-    object_cube1->color = { Float(0.75), one, zero };
+    //object_cube1->color = { Float(0.75), one, zero };
 
     // loop until the user closes the window
     Input::Start(window);
@@ -108,7 +108,7 @@ int main() {
           auto mesh_ball = std::make_shared<Ball>();
           auto ball = scene.AddObject(mesh_ball,
         Shader::shader_phong,
-        Transform(Vec3(0, 2, 0.3),
+        Transform(Vec3(-5, 2, 0.3),
             Quat(1, 0, 0, 0),
             Vec3(1, 1, 1)));
         ball->color = { Float(0.75), one, zero };

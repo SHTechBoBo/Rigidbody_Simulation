@@ -16,10 +16,13 @@ class Ball : public Mesh {
   Ball& operator=(Ball&&) = default;
   virtual ~Ball() override = default;
 
-
+  float mass;
+  Mat3 I_ref;
+  Vec3 v;
+  Vec3 w;
 
   /// interfaces
-
+  void CollisionHandler(Vec3 P, Vec3 N);
   virtual void FixedUpdate() override;
 
  private:

@@ -1,8 +1,121 @@
 #include <ball.h>
+#include <mesh.h>
+#include <object.h>
+#include <transform.h>
 
-Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {}
+Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
+
+	std::vector<MeshVertex> vertices = this->vertices;
+	int vertices_num = vertices.size();
+
+	mass = 0;
+	I_ref = Mat3(0.0);
+	v = Vec3(0.0);
+	w = Vec3(0.0);
+
+	for (int i = 0; i < vertices_num; i++) {
+		// 一个三角形认为质量是1
+		mass += 1;
+
+		float x = vertices[i].position[0];
+		float y = vertices[i].position[1];
+		float z = vertices[i].position[2];
+
+		// 转动惯量矩阵每一项都要乘以质量 但因为是1所以省略  
+		float diag = sqrt(x * x + y * y + z * z);
+
+		I_ref[0][0] += diag;
+		I_ref[1][1] += diag;
+		I_ref[2][2] += diag;
+
+		I_ref[0][0] -= x * x;
+		I_ref[0][1] -= x * y;
+		I_ref[0][2] -= x * z;
+
+		I_ref[1][0] -= y * x;
+		I_ref[1][1] -= y * y;
+		I_ref[1][2] -= y * z;
+
+		I_ref[2][0] -= z * x;
+		I_ref[2][1] -= z * y;
+		I_ref[2][2] -= z * z;
+	}
+
+
+}
+
+void Ball::CollisionHandler(Vec3 P, Vec3 N) {
+	// 旋转矩阵
+	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
+	Vec3 sum_ri = Vec3(0.0);
+	float sum = 0;
+
+	Vec3 x = object->transform->position;
+	std::vector<MeshVertex> vertices = this->vertices;
+	int vertices_num = vertices.size();
+
+	// 计算各个点的力矩
+	for (int i = 0; i < vertices_num; i++) {
+		Vec3 ri = R * vertices[i].position;
+		Vec3 xi = x + ri;
+		Vec3 vi = v + glm::cross(w, ri);
+		
+		// 有没有陷入其他物体
+		if (glm::dot(xi - P, N) < 0 && glm::dot(vi, N) < 0) {
+			sum_ri += ri;
+			sum++;
+		}
+	}
+
+	if (sum != 0) {
+		Vec3 ri = sum_ri / sum;
+		Vec3 vi = v + glm::cross(w, ri);
+		
+		// R I RT
+		Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
+
+		// 叉乘向量转化为矩阵
+		Mat3 Rstar = Mat3({ 0,-ri[2],ri[1] }, { ri[2],0,-ri[0] }, { -ri[1],ri[0], 0 });
+		Mat3 K = glm::transpose(Rstar) * inv_I * Rstar;
+
+		K[0][0] += 1.0 / mass;
+		K[1][1] += 1.0 / mass;
+		K[2][2] += 1.0 / mass;
+
+		// TODO: restitution 
+		Vec3 temp = -vi - 0.5f * (vi.y * N);
+		Vec3 J = glm::inverse(K) * temp;
+
+		// 更新速度和角速度
+		v += J / mass;
+		w += inv_I * glm::cross(ri, J);
+	}
+
+}
 
 void Ball::FixedUpdate()
 {
+	// 重力加速度
+	v[1] -= 9.8f * fixed_delta_time;
+
+	v *= 0.999f;
+	w *= 0.98f;
+
+	Vec3 x = object->transform->position;
+	Quat q = object->transform->rotation;
+
+	CollisionHandler(Vec3(0, 0.01f, 0), Vec3(0, 1, 0));
+
+	x += fixed_delta_time * v;
+	Quat wq = Quat(w.x, w.y, w.z, 0);
+	Quat temp_q = wq * q;
+	q.x += 0.5f * fixed_delta_time * temp_q.x;
+	q.y += 0.5f * fixed_delta_time * temp_q.y;
+	q.z += 0.5f * fixed_delta_time * temp_q.z;
+	q.w += 0.5f * fixed_delta_time * temp_q.w;
+
+	// std::cout << x.x << " " << x.y << " " << x.z << "\n";
+	object->transform->SetPos(x);
+	object->transform->SetRotation(w);
 	return;
 }
