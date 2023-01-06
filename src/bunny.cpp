@@ -1,12 +1,15 @@
 #include <bunny.h>
 #include "load_obj.h"
+#include "object.h"
+#include "transform.h"
+#include <random>
 
 Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
                     std::vector<UVec3>(),
                     GL_STREAM_DRAW, GL_STATIC_DRAW,
                     true)
 {
-    auto bunny = makeMeshObject("D:/ShanghaiTech/CGI/proj/assets/stanford_bunny.obj", Vec3f(1, 1, 1), 1);
+    auto bunny = makeMeshObject("D:/ShanghaiTech/CGI/c/MassRbSim/assets/stanford_bunny.obj", Vec3f(1, 1, 1), 1);
     auto ver = bunny->vertices;
     auto nor = bunny->normals;
     auto vi = bunny->v_indices;
@@ -42,5 +45,6 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
 
 void Bunny::FixedUpdate()
 {
+    object->transform->SetPos(object->transform->GetPos() - Vec3(float(rand() % 10) / 10, 0, 0));
     return;
 }

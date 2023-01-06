@@ -19,6 +19,9 @@ int main() {
   constexpr Float damping_ratio = Float(0.0015);
   std::vector<IVec2> fixed_masses { { 0, -1 }, { -1, -1 } };
 
+  //生成标识
+  bool b = false;
+  bool r = false;
 
 
   /// setup window
@@ -72,8 +75,6 @@ int main() {
 
     // mesh primitives
     auto mesh_cube = std::make_shared<Mesh>(MeshPrimitiveType::cube);
-    auto mesh_ball = std::make_shared<Ball>();
-    auto mesh_bunny = std::make_shared<Bunny>();
 
     auto object_cube1 = scene.AddObject(mesh_cube,
                                        Shader::shader_phong,
@@ -102,26 +103,33 @@ int main() {
         glfwSetWindowShouldClose(window, true);
 
       //按键添加球体
-      if (Input::GetKey(KeyCode::B))
+      if (!b && Input::GetKey(KeyCode::B))
        {
-        auto ball = scene.AddObject(mesh_ball,
+          auto mesh_ball = std::make_shared<Ball>();
+          auto ball = scene.AddObject(mesh_ball,
         Shader::shader_phong,
         Transform(Vec3(0, 2, 0.3),
             Quat(1, 0, 0, 0),
             Vec3(1, 1, 1)));
         ball->color = { Float(0.75), one, zero };
        }
+      if (!Input::GetKey(KeyCode::B))
+          b = false;
       
       //按键添加兔子
-      if (Input::GetKey(KeyCode::R))
+      if (!r && Input::GetKey(KeyCode::R))
       {
+          auto mesh_bunny = std::make_shared<Bunny>();
           auto bunny = scene.AddObject(mesh_bunny,
               Shader::shader_phong,
               Transform(Vec3(-1, 2, 0.3),
                   Quat(1, 0, 0, 0),
                   Vec3(1, 1, 1)));
           bunny->color = { Float(0.25), Float(0.8), zero};
+          r = true;
       }
+      if (!Input::GetKey(KeyCode::R))
+          r = false;
 
       /// fixed update
       //物体更新位置

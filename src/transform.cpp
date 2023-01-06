@@ -45,6 +45,20 @@ Vec3 Transform::Down()    const { return rotation * Vec3( 0, -1,  0); }
 Vec3 Transform::Forward() const { return rotation * Vec3( 0,  0, -1); }
 Vec3 Transform::Back()    const { return rotation * Vec3( 0,  0,  1); }
 
+Vec3 Transform::GetPos() { return position; }
+
+void Transform::SetPos(Vec3 pos)
+{
+    position = pos;
+}
+
+Quat Transform::GetRotation() { return rotation; }
+
+void Transform::SetRotation(Quat rot)
+{
+    rotation = rot;
+}
+
 void Transform::Rotate(const Vec3& axis, Float radians) {
   rotation = glm::quat_cast(glm::rotate(Mat4(one), radians, axis)) * rotation;
 }

@@ -28,6 +28,10 @@ class Transform {
   [[nodiscard]] Vec3 Forward() const;
   [[nodiscard]] Vec3 Back()    const;
 
+  Vec3 GetPos();
+  void SetPos(Vec3 pos);
+  Quat GetRotation();
+  void SetRotation(Quat rot);
   void Rotate(const Vec3& axis, Float radians);
   void RotateAround(const Vec3& axis, const Vec3& pivot, Float radians);
 
