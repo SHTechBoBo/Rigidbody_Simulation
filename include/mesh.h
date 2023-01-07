@@ -46,8 +46,10 @@ class Mesh {
 
   void DrawTriangles() const;
 
+  virtual void CollisionDetect(std::shared_ptr<Mesh> mesh);
   virtual void FixedUpdate();
 
+  std::shared_ptr <Object> GetObject();
  protected:
   enum class DrawMode { arrays, elements };
 
@@ -64,6 +66,7 @@ class Mesh {
   GLuint vao;
   GLuint vbo;
   GLuint ebo;
+
 
   void SetObject(const std::shared_ptr<Object>& new_object);
 

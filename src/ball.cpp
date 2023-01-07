@@ -44,13 +44,91 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 
 }
 
+void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
+
+	std::shared_ptr<Object> obj = mesh->GetObject();
+
+	if (obj->GetTag() == "Wall") {
+		// position rotation scale
+		Vec3 wall_P = obj->transform->position;
+		Mat3 wall_R = glm::mat3_cast(obj->transform->rotation) * Mat3(1.0);
+		Vec3 wall_S = obj->transform->scale;
+	
+		// six surface
+		Vec3 left = wall_R * (wall_P - Vec3(1, 0, 0) * wall_S.x);
+		Vec3 right = wall_R * (wall_P + Vec3(1, 0, 0) * wall_S.x);
+		Vec3 up = wall_R * (wall_P + Vec3(0, 1, 0) * wall_S.y);
+		Vec3 down = wall_R * (wall_P - Vec3(0, 1, 0) * wall_S.y);
+		Vec3 front = wall_R * (wall_P - Vec3(0, 0, 1) * wall_S.z);
+		Vec3 behind = wall_R * (wall_P + Vec3(0, 0, 1) * wall_S.z);
+
+		std::vector<Vec3> surfaces{ left, right, up, down, front, behind };
+
+		// six normal
+		Vec3 left_normal = glm::normalize(wall_R * Vec3(-1, 0, 0));
+		Vec3 right_normal = glm::normalize(wall_R * Vec3(1, 0, 0));
+		Vec3 up_normal = glm::normalize(wall_R * Vec3(0, 1, 0));
+		Vec3 down_normal = glm::normalize(wall_R * Vec3(0, -1, 0));
+		Vec3 front_normal = glm::normalize(wall_R * Vec3(0, 0, -1));
+		Vec3 behind_normal = glm::normalize(wall_R * Vec3(0, 0, 1));
+
+		std::vector<Vec3> normals{ left_normal, right_normal, up_normal, down_normal, front_normal, behind_normal };
+
+		Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
+		Vec3 sum_ri = Vec3(0.0);
+		float sum = 0;
+
+		std::vector<MeshVertex> vertices = this->vertices;
+		int vertices_num = vertices.size();
+
+		Vec3 x = object->transform->position;
+
+		int surface_id = -1;
+
+		// 计算各个点
+		for (int i = 0; i < vertices_num; i++) {
+			Vec3 ri = R * vertices[i].position;
+			Vec3 xi = x + ri;
+
+			int count = 0;
+			float dis = -10000;
+			int close_surface_id = -1;
+			for (int j = 0; j < 6; j++) {
+				float tmp = glm::dot(xi - surfaces[j], normals[j]);
+				// 在一个面内
+				if (tmp < 0) {
+					count++;
+					// 算到那个面最近
+					if (tmp > dis) {
+						dis = tmp;
+						close_surface_id = j;
+					}
+				}
+				// 在所有面内才算真的在内部
+				if (count == 6) {
+					surface_id = close_surface_id;
+					break;
+				}
+			}
+		}
+
+		if (surface_id != -1) {
+			CollisionHandler(surfaces[surface_id] + normals[surface_id]*1e-2f, normals[surface_id]);
+		}
+
+	}
+}
+
+
 void Ball::CollisionHandler(Vec3 P, Vec3 N) {
+
 	// 旋转矩阵
 	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
 	Vec3 sum_ri = Vec3(0.0);
 	float sum = 0;
 
 	Vec3 x = object->transform->position;
+
 	std::vector<MeshVertex> vertices = this->vertices;
 	int vertices_num = vertices.size();
 
@@ -95,8 +173,9 @@ void Ball::CollisionHandler(Vec3 P, Vec3 N) {
 
 void Ball::FixedUpdate()
 {
-	// 重力加速度
 	v[1] -= 9.8f * fixed_delta_time;
+	// 重力加速度
+
 
 	v *= 0.999f;
 	w *= 0.98f;
@@ -104,7 +183,7 @@ void Ball::FixedUpdate()
 	Vec3 x = object->transform->position;
 	Quat q = object->transform->rotation;
 
-	CollisionHandler(Vec3(0, 0.01f, 0), Vec3(0, 1, 0));
+	// CollisionHandler(Vec3(0, 0.05f, 0), Vec3(0, 1, 0));
 
 	x += fixed_delta_time * v;
 	Quat wq = Quat(w.x, w.y, w.z, 0);

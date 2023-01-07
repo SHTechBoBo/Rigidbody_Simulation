@@ -34,8 +34,20 @@ void Scene::Update() {
 迭代所有obj状态
 */
 void Scene::FixedUpdate() {
-  for (auto& object : objects)
-    object->FixedUpdate();
+    // 计算碰撞
+    for (auto& object_1 : objects) {
+        for (auto& object_2 : objects) {
+            if (object_1 != object_2) {
+                object_1->CollisionDetect(object_2);
+            }
+        }
+    }
+
+
+    // 更新位置
+    for (auto& object : objects) {
+        object->FixedUpdate();
+    }
 }
 
 void Scene::RenderUpdate() {

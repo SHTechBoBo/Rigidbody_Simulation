@@ -23,10 +23,11 @@ class Ball : public Mesh {
 
   /// interfaces
   void CollisionHandler(Vec3 P, Vec3 N);
+  virtual void CollisionDetect(std::shared_ptr<Mesh> mesh) override;
   virtual void FixedUpdate() override;
 
  private:
-  static constexpr unsigned simulation_steps_per_fixed_update_time = 4;
+  static constexpr unsigned simulation_steps_per_fixed_update_time = 1;
   static constexpr Float fixed_delta_time = Time::fixed_delta_time / Float(simulation_steps_per_fixed_update_time);
 
   std::vector<Vec3> world_velocities;

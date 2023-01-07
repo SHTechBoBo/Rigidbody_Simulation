@@ -9,6 +9,7 @@ class Object final {
   std::unique_ptr<Transform> transform;
   Vec3 color;
 
+
   Object(std::shared_ptr<Mesh> mesh,
          std::shared_ptr<Shader> shader);
   Object(std::shared_ptr<Mesh> mesh,
@@ -21,5 +22,13 @@ class Object final {
   Object& operator=(Object&&) = default;
   ~Object() = default;
 
+  void CollisionDetect(std::shared_ptr<Object> obj);
   void FixedUpdate() const;
+  
+
+  void SetTag(std::string t);
+  std::string GetTag();
+
+private:
+  std::string tag;
 };

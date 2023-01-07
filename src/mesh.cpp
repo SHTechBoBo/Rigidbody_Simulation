@@ -221,6 +221,10 @@ Mesh::Mesh(std::vector<MeshVertex>&& vertices, std::vector<UVec3>&& indices,
   glBindVertexArray(0);
 }
 
+std::shared_ptr <Object> Mesh::GetObject() {
+    return object;
+}
+
 void Mesh::SetObject(const std::shared_ptr<Object>& new_object) {
   object = new_object;
 }
@@ -238,4 +242,8 @@ void Mesh::DrawTriangles() const {
   glBindVertexArray(0);
 }
 
-/*virtual*/ void Mesh::FixedUpdate() { }
+/*virtual*/ 
+void Mesh::FixedUpdate() { }
+void Mesh::CollisionDetect(std::shared_ptr<Mesh> mesh) {};
+
+

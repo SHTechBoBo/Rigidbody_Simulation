@@ -19,7 +19,25 @@ Object::Object(std::shared_ptr<Mesh> mesh,
   color(0, 0, 0) {
 }
 
+void Object::CollisionDetect(std::shared_ptr<Object> obj) {
+    if (mesh && obj->mesh) {
+        mesh->CollisionDetect(obj->mesh);
+    }
+
+ 
+}
+
+
 void Object::FixedUpdate() const {
-  if (mesh)
-    mesh->FixedUpdate();
+    if (mesh) {
+        mesh->FixedUpdate();
+    }
+}
+
+void Object::SetTag(std::string t) {
+    tag = t;
+}
+
+std::string Object::GetTag() {
+    return tag;
 }
