@@ -37,7 +37,7 @@ void Scene::FixedUpdate() {
     // ¼ÆËãÅö×²
     for (auto& object_1 : objects) {
         for (auto& object_2 : objects) {
-            if (object_1 != object_2) {
+            if (object_1 != object_2 && object_1->GetTag() != "Wall") {
                 object_1->CollisionDetect(object_2);
             }
         }

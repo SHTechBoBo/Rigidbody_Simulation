@@ -1,7 +1,9 @@
 #include "cloth.h"
 #include "scene.h"
 #include "ball.h"
+#include "wall.h"
 #include "bunny.h"
+#include "object.h"
 
 int main() {
 
@@ -76,14 +78,24 @@ int main() {
     // mesh primitives
     auto mesh_cube = std::make_shared<Mesh>(MeshPrimitiveType::cube);
 
-
-    auto object_cube2 = scene.AddObject(mesh_cube,
+    auto mesh_wall = std::make_shared<Wall>(Vec3(10, 0.1, 5), Vec3(0, 0, 0));
+    auto object_wall = scene.AddObject(mesh_wall,
         Shader::shader_phong,
         Transform(Vec3(0, 0, 0),
-            Quat(0.5, 0.5, 0, 0),
-            Vec3(10, 0.1, 1)));
-    object_cube2->color = { Float(0.75), one, zero };
-    object_cube2->SetTag("Wall");
+            Quat(1, 0, 0, 0),
+            Vec3(1, 1, 1)));
+    object_wall ->color = { Float(0.75), one, 0.5f };
+    object_wall->SetTag("Wall");
+
+
+    //auto object_cube2 = scene.AddObject(mesh_cube,
+    //    Shader::shader_phong,
+    //    Transform(Vec3(0, 0, 0),
+    //        Quat(0.5, 0.5, 0, 0),
+    //        Vec3(10, 0.1, 1)));
+    //object_cube2->color = { Float(0.75), one, zero };
+    //object_cube2->SetTag("Wall");
+
 
     //auto object_cube1 = scene.AddObject(mesh_cube,
     //    Shader::shader_phong,
@@ -118,6 +130,7 @@ int main() {
                                         Vec3(1, 1, 1)));
           ball->SetTag("Ball");
           ball->color = { Float(0.75), one, zero };
+          b = true;
        }
       if (!Input::GetKey(KeyCode::B))
           b = false;

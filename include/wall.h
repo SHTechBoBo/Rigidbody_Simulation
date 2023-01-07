@@ -15,6 +15,8 @@ public:
 	Wall& operator=(const Wall&) = default;
 	Wall& operator=(Wall&&) = default;
 	virtual ~Wall() override = default;
+	virtual void GetNP(Vec3 vertex, Vec3& P, Vec3& N);
+
 
 
 

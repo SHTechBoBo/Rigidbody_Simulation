@@ -48,9 +48,11 @@ class Mesh {
 
   virtual void CollisionDetect(std::shared_ptr<Mesh> mesh);
   virtual void FixedUpdate();
+  virtual void GetNP(Vec3 vertex, Vec3& P, Vec3& N);
+
 
   std::shared_ptr <Object> GetObject();
- protected:
+
   enum class DrawMode { arrays, elements };
 
   std::shared_ptr<Object> object;

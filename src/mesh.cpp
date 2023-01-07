@@ -245,5 +245,6 @@ void Mesh::DrawTriangles() const {
 /*virtual*/ 
 void Mesh::FixedUpdate() { }
 void Mesh::CollisionDetect(std::shared_ptr<Mesh> mesh) {};
+void Mesh::GetNP(Vec3 vertex,Vec3& P, Vec3& N) {};
 
 

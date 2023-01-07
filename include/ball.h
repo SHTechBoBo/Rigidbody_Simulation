@@ -22,9 +22,11 @@ class Ball : public Mesh {
   Vec3 w;
 
   /// interfaces
-  void CollisionHandler(Vec3 P, Vec3 N);
+  void CollisionHandler(std::shared_ptr<Object> obj);
   virtual void CollisionDetect(std::shared_ptr<Mesh> mesh) override;
   virtual void FixedUpdate() override;
+  virtual void GetNP(Vec3 vertex, Vec3& P, Vec3& N);
+
 
  private:
   static constexpr unsigned simulation_steps_per_fixed_update_time = 1;

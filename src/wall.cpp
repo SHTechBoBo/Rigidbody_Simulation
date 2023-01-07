@@ -19,13 +19,12 @@ Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
     m = glm::rotate(r, rotate.x, Vec3(1, 0, 0)) * glm::rotate(r, rotate.y, Vec3(0, 1, 0)) * glm::rotate(r, rotate.z, Vec3(0, 0, 1)) * t;
 
     vertices = {
-        MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)), // forward
-        MeshVertex(Vec3(0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 0.0)),
-        MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
-        MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
-        MeshVertex(Vec3(-0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 1.0)),
-        MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)),
-
+        //MeshVertex(Vec3(-0.5, -0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)), // forward
+        //MeshVertex(Vec3(0.5, -0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 0.0)),
+        //MeshVertex(Vec3(0.5,  0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
+        //MeshVertex(Vec3(0.5,  0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
+        //MeshVertex(Vec3(-0.5,  0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 1.0)),
+        //MeshVertex(Vec3(-0.5, -0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0))
         MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 0.0)), // back
         MeshVertex(Vec3(0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(1.0, 0.0)),
         MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(1.0, 1.0)),
@@ -33,27 +32,41 @@ Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
         MeshVertex(Vec3(-0.5,  0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 1.0)),
         MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 0.0)),
 
+        MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)), // forward
+        MeshVertex(Vec3(0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 0.0)),
+        MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
+        MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(1.0, 1.0)),
+        MeshVertex(Vec3(-0.5,  0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 1.0)),
+        MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)),
+
+        //MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 0.0)), // back
+        //MeshVertex(Vec3(0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(1.0, 0.0)),
+        //MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(1.0, 1.0)),
+        //MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(1.0, 1.0)),
+        //MeshVertex(Vec3(-0.5,  0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 1.0)),
+        //MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(0.0,  0.0,  1.0), Vec2(0.0, 0.0)),
+        
         MeshVertex(Vec3(-0.5,  0.5,  0.5), Vec3(-1.0,  0.0,  0.0), Vec2(1.0, 0.0)), // left
         MeshVertex(Vec3(-0.5,  0.5, -0.5), Vec3(-1.0,  0.0,  0.0), Vec2(1.0, 1.0)),
         MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(-1.0,  0.0,  0.0), Vec2(0.0, 1.0)),
         MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(-1.0,  0.0,  0.0), Vec2(0.0, 1.0)),
         MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(-1.0,  0.0,  0.0), Vec2(0.0, 0.0)),
         MeshVertex(Vec3(-0.5,  0.5,  0.5), Vec3(-1.0,  0.0,  0.0), Vec2(1.0, 0.0)),
-
+        
         MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(1.0,  0.0,  0.0), Vec2(1.0, 0.0)), // right
         MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(1.0,  0.0,  0.0), Vec2(1.0, 1.0)),
         MeshVertex(Vec3(0.5, -0.5, -0.5), Vec3(1.0,  0.0,  0.0), Vec2(0.0, 1.0)),
         MeshVertex(Vec3(0.5, -0.5, -0.5), Vec3(1.0,  0.0,  0.0), Vec2(0.0, 1.0)),
         MeshVertex(Vec3(0.5, -0.5,  0.5), Vec3(1.0,  0.0,  0.0), Vec2(0.0, 0.0)),
         MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(1.0,  0.0,  0.0), Vec2(1.0, 0.0)),
-
+        
         MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0, -1.0,  0.0), Vec2(0.0, 1.0)), // down
         MeshVertex(Vec3(0.5, -0.5, -0.5), Vec3(0.0, -1.0,  0.0), Vec2(1.0, 1.0)),
         MeshVertex(Vec3(0.5, -0.5,  0.5), Vec3(0.0, -1.0,  0.0), Vec2(1.0, 0.0)),
         MeshVertex(Vec3(0.5, -0.5,  0.5), Vec3(0.0, -1.0,  0.0), Vec2(1.0, 0.0)),
         MeshVertex(Vec3(-0.5, -0.5,  0.5), Vec3(0.0, -1.0,  0.0), Vec2(0.0, 0.0)),
         MeshVertex(Vec3(-0.5, -0.5, -0.5), Vec3(0.0, -1.0,  0.0), Vec2(0.0, 1.0)),
-
+        
         MeshVertex(Vec3(-0.5,  0.5, -0.5), Vec3(0.0,  1.0,  0.0), Vec2(0.0, 1.0)), // up
         MeshVertex(Vec3(0.5,  0.5, -0.5), Vec3(0.0,  1.0,  0.0), Vec2(1.0, 1.0)),
         MeshVertex(Vec3(0.5,  0.5,  0.5), Vec3(0.0,  1.0,  0.0), Vec2(1.0, 0.0)),
@@ -74,6 +87,20 @@ Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
     {
         vertices[i].position = Vec3(m * Vec4(vertices[i].position, 1.0));
     }
+    float sign;
+    for (int i = 0; i < 6; i++)
+    {
+        auto normal = glm::normalize(glm::cross(vertices[i * 6 + 2].position - vertices[i * 6].position,vertices[i * 6 + 1].position - vertices[i * 6].position));
+        if (i % 2 == 0)
+            sign = -1;
+        else
+            sign = 1;
+        for (int j = 0; j < 6; j++)
+        {
+            vertices[i * 6 + j].normal = sign * normal;
+        }
+    }
+    
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -94,5 +121,33 @@ Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
 
 void Wall::FixedUpdate()
 {
+    return;
+}
+
+void Wall::GetNP(Vec3 vertex, Vec3& P, Vec3& N)
+{
+    int count = 0;
+    float dis = -10000;
+    int close_surface_id = -1;
+    for (int j = 0; j < 6; j++) {
+        float tmp = glm::dot(vertex - vertices[6 * j].position, vertices[6 * j].normal);
+        // 算到那个面最近
+        if (tmp > dis) {
+            dis = tmp;
+            close_surface_id = j;
+            if (tmp > 0)
+            {
+                P = vertices[6 * j].position;
+                N = vertices[6 * j].normal;
+                return;
+            }
+            if(tmp < 0)
+            {
+                count++;
+            }
+        }
+    }
+    P = vertices[6 * close_surface_id].position;
+    N = vertices[6 * close_surface_id].normal;
     return;
 }
