@@ -50,7 +50,7 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 
 	// ³õÉ¸
 	if (obj->GetTag() == "Ball") {
-		if (glm::distance(object->transform->position, obj->transform->position) > 2) {
+		if (glm::distance(object->transform->position, obj->transform->position) > 4) {
 			return;
 		}
 	}

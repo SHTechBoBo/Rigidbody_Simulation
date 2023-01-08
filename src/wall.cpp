@@ -16,7 +16,7 @@ Wall::Wall(Vec3 pos, Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
     Mat4 r = Mat4(1.0f);
     Mat4 m = Mat4(1.0f);
     Mat4 t = glm::scale(r, scale);
-    m = glm::rotate(r, rotate.x, Vec3(1, 0, 0)) * glm::rotate(r, rotate.y, Vec3(0, 1, 0)) * glm::rotate(r, rotate.z, Vec3(0, 0, 1)) * t;
+    m = glm::translate(Mat4(1.0f), pos) * glm::rotate(Mat4(1.0f), rotate.x, Vec3(1, 0, 0)) * glm::rotate(Mat4(1.0f), rotate.y, Vec3(0, 1, 0)) * glm::rotate(Mat4(1.0f), rotate.z, Vec3(0, 0, 1)) * t;
 
     vertices = {
         //MeshVertex(Vec3(-0.5, -0.5, 0), Vec3(0.0,  0.0, -1.0), Vec2(0.0, 0.0)), // forward
