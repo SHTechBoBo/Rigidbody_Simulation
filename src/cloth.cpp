@@ -78,13 +78,13 @@ bool RectCloth::SetMassFixedOrNot(int iw, int ih, bool fixed_or_not) {
   return true;
 }
 
-/*override*/ void RectCloth::FixedUpdate() {
-  // simulate
-  Simulate(simulation_steps_per_fixed_update_time);
-
-  // update mesh vertices
-  UpdateMeshVertices();
-}
+///*override*/ void RectCloth::FixedUpdate() {
+//  // simulate
+//  Simulate(simulation_steps_per_fixed_update_time);
+//
+//  // update mesh vertices
+//  UpdateMeshVertices();
+//}
 
 
 

@@ -26,7 +26,7 @@ class MeshVertex {
 
 class Mesh {
  public:
-  static constexpr unsigned primitive_sphere_resolution = 16;
+  static constexpr unsigned primitive_sphere_resolution = 6;
 
   explicit Mesh(const MeshPrimitiveType& mesh_primitive);
   explicit Mesh(std::vector<MeshVertex>&& vertices,
@@ -46,8 +46,8 @@ class Mesh {
 
   void DrawTriangles() const;
 
-  virtual void CollisionDetect(std::shared_ptr<Mesh> mesh);
-  virtual void FixedUpdate();
+  virtual void CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem);
+  virtual void FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem);
   virtual void GetNP(Vec3 vertex, Vec3& P, Vec3& N);
 
 

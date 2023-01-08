@@ -23,9 +23,9 @@ class Ball : public Mesh {
   float restitution;
 
   /// interfaces
-  void CollisionHandler(std::shared_ptr<Object> obj);
-  virtual void CollisionDetect(std::shared_ptr<Mesh> mesh) override;
-  virtual void FixedUpdate() override;
+  virtual void CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem);
+  //virtual void CollisionDetect(std::shared_ptr<Mesh> mesh) override;
+  virtual void FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem) override;
   virtual void GetNP(Vec3 vertex, Vec3& P, Vec3& N);
 
 

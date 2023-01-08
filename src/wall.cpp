@@ -119,11 +119,6 @@ Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
     glBindVertexArray(0);
 }
 
-void Wall::FixedUpdate()
-{
-    return;
-}
-
 void Wall::GetNP(Vec3 vertex, Vec3& P, Vec3& N)
 {
     int count = 0;

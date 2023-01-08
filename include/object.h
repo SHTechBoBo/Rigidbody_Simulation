@@ -22,8 +22,8 @@ class Object final {
   Object& operator=(Object&&) = default;
   ~Object() = default;
 
-  void CollisionDetect(std::shared_ptr<Object> obj);
-  void FixedUpdate() const;
+  void CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem);
+  void FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem) const;
   
 
   void SetTag(std::string t);

@@ -25,7 +25,7 @@ class RectCloth : public Mesh {
 
   bool SetMassFixedOrNot(int iw, int ih, bool fixed_or_not);
 
-  virtual void FixedUpdate() override;
+  //virtual void FixedUpdate() override;
 
  private:
   static constexpr unsigned simulation_steps_per_fixed_update_time = 4;

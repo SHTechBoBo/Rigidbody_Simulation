@@ -19,18 +19,16 @@ Object::Object(std::shared_ptr<Mesh> mesh,
   color(0, 0, 0) {
 }
 
-void Object::CollisionDetect(std::shared_ptr<Object> obj) {
+void Object::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem)
+{
     if (mesh && obj->mesh) {
-        mesh->CollisionDetect(obj->mesh);
+        mesh->CollisionHandler(obj, J_mem, ri_mem);
     }
-
- 
 }
 
-
-void Object::FixedUpdate() const {
+void Object::FixedUpdate(std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem) const {
     if (mesh) {
-        mesh->FixedUpdate();
+        mesh->FixedUpdate(J_mem, ri_mem);
     }
 }
 

@@ -35,19 +35,37 @@ void Scene::Update() {
 */
 void Scene::FixedUpdate() {
     // 计算碰撞
-    for (auto& object_1 : objects) {
-        for (auto& object_2 : objects) {
-            if (object_1 != object_2 && object_1->GetTag() != "Wall") {
-                object_1->CollisionDetect(object_2);
+    std::vector<std::vector<Vec3>> J_mem, ri_mem;
+    for (int i = 0; i < objects.size(); i++) {
+        J_mem.push_back(std::vector<Vec3>());
+        ri_mem.push_back(std::vector<Vec3>());
+        for (int j = 0; j < objects.size(); j++)
+        {
+            if (i != j && objects[i]->GetTag() != "Wall") {
+                objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
             }
         }
     }
+    for (int i = 0; i < objects.size(); i++)
+    {
+        if (objects[i]->GetTag() != "Wall")
+        {
+            objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
+        }
+    }
+    //for (auto& object_1 : objects) {
+    //    for (auto& object_2 : objects) {
+    //        if (object_1 != object_2 && object_1->GetTag() != "Wall") {
+    //            object_1->CollisionHandler(object_2, J_mem, ri_mem);
+    //        }
+    //    }
+    //}
 
 
     // 更新位置
-    for (auto& object : objects) {
-        object->FixedUpdate();
-    }
+    //for (auto& object : objects) {
+    //    object->FixedUpdate();
+    //}
 }
 
 void Scene::RenderUpdate() {

@@ -45,11 +45,11 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 
 }
 
-void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
+//void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
 
-	std::shared_ptr<Object> obj = mesh->GetObject();
+//	std::shared_ptr<Object> obj = mesh->GetObject();
 
-	if (obj->GetTag() == "Wall") {
+	//if (obj->GetTag() == "Wall") {
 		// position rotation scale
 		//Vec3 wall_P = obj->transform->position;
 		//Mat3 wall_R = glm::mat3_cast(obj->transform->rotation) * Mat3(1.0);
@@ -108,7 +108,7 @@ void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
 				// 在所有面内才算真的在内部
 				//if (count == 6) {
 				//	surface_id = close_surface_id;
-					CollisionHandler(obj);
+//					CollisionHandler(obj);
 				//	break;
 				//}
 		//	}
@@ -118,16 +118,16 @@ void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
 		//	CollisionHandler(surfaces[surface_id] + normals[surface_id]*1e-2f, normals[surface_id]);
 		//}
 
-	}
-}
+	//}
+//}
 
 
-void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
+void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem) {
 	// 重力加速度
-	v[1] -= 9.8f * fixed_delta_time;
-
-	v *= 0.98f;
-	w *= 0.98f;
+	//v[1] -= 9.8f * fixed_delta_time;
+	//
+	//v *= 0.98f;
+	//w *= 0.98f;
 
 	// 旋转矩阵
 	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
@@ -181,14 +181,30 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
 		Vec3 J = glm::inverse(K) * temp;
 
 		// 更新速度和角速度
-		v += J / mass;
-		w += inv_I * glm::cross(ri, J);
+		//v += J / mass;
+		//w += inv_I * glm::cross(ri, J);
+
+		//储存J，ri
+		J_mem.push_back(J);
+		ri_mem.push_back(ri);
 	}
 
 }
 
-void Ball::FixedUpdate()
+void Ball::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 {
+	v[1] -= 9.8f * fixed_delta_time;
+
+	v *= 0.98f;
+	w *= 0.98f;
+	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
+	Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
+
+	for (int i = 0; i < J_mem.size(); i++)
+	{
+		v += J_mem[i] / mass;
+		w += inv_I * glm::cross(ri_mem[i], J_mem[i]);
+	}
 
 	Vec3 x = object->transform->position;
 	Quat q = object->transform->rotation;
@@ -209,4 +225,11 @@ void Ball::FixedUpdate()
 	return;
 }
 
-void Ball::GetNP(Vec3 vertex, Vec3& P, Vec3& N) {};
+void Ball::GetNP(Vec3 vertex, Vec3& P, Vec3& N)
+{
+	Vec3 x = object->transform->position;
+	N = glm::normalize(vertex - x);
+	float len = vertices[0].position.x / glm::normalize(vertices[0].position).x;
+	P = len * N + x;
+	return;
+}

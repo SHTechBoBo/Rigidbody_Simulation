@@ -4,6 +4,7 @@
 #include "wall.h"
 #include "bunny.h"
 #include "object.h"
+#include <random>
 
 int main() {
 
@@ -125,7 +126,7 @@ int main() {
           auto mesh_ball = std::make_shared<Ball>();
           auto ball = scene.AddObject(mesh_ball,
                                     Shader::shader_phong,
-                                    Transform(Vec3(0, 2, 0),
+                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 2, 0),
                                         Quat(1, 0, 0, 0),
                                         Vec3(1, 1, 1)));
           ball->SetTag("Ball");

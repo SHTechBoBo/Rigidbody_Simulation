@@ -43,7 +43,7 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
     glBindVertexArray(0);
 }
 
-void Bunny::FixedUpdate()
+void Bunny::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 {
     object->transform->SetPos(object->transform->GetPos() - Vec3(float(rand() % 10) / 10, 0, 0));
     return;
