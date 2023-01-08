@@ -9,7 +9,7 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
                     GL_STREAM_DRAW, GL_STATIC_DRAW,
                     true)
 {
-    auto bunny = makeMeshObject(GetFilePath("assets/stanford_bunny.obj").c_str(), Vec3f(1, 1, 1), 1);
+    auto bunny = makeMeshObject(GetFilePath("assets/bunny.obj").c_str(), Vec3f(0, 0, 0), 1);
     auto ver = bunny->vertices;
     auto nor = bunny->normals;
     auto vi = bunny->v_indices;
