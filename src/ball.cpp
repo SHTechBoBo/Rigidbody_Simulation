@@ -12,7 +12,7 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 	I_ref = Mat3(0.0);
 	v = Vec3(0.0);
 	w = Vec3(0.0); 
-	restitution = 0.5f;
+	restitution = 1.0f;
 
 	for (int i = 0; i < vertices_num; i++) {
 		// 一个三角形认为质量是1
@@ -85,15 +85,15 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 		Vec3 ri = sum_ri / sum;
 		Vec3 vi = v + glm::cross(w, ri);
 
-		// 防止抖动
-		if (abs(vi.y + 9.8f * fixed_delta_time) < 4.0f * fixed_delta_time) {
-			restitution = 0;
-		}
-		else
-		{
-			restitution = 0.5f;
-		}
-		
+		//// 防止抖动
+		//if (abs(vi.y + 9.8f * fixed_delta_time) < 4.0f * fixed_delta_time) {
+		//	restitution = 0;
+		//}
+		//else
+		//{
+		//	restitution = 1.0f;
+		//}
+		//
 		// R I RT
 		Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
 
@@ -107,8 +107,22 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 
 		obj->mesh->GetNP(x + ri, P, N);
 
+		Vec3 vi_n = glm::dot(vi, N) * N;
+		Vec3 vi_t = vi - vi_n;
+
+		float u_n = 0.3f;
+		float u_t = 1 - u_n * (1 + u_n) * glm::length(vi_n) / glm::length(vi_t);
+		if (u_t < 0) {
+			u_t = 0;
+		}
+
+		Vec3 vi_new = -u_n * vi_n + u_t * vi_t;
+
+
+		Vec3 temp = -vi + vi_new * restitution;
+
 		// restitution正常是0.5 轻微抖动时变为0
-		Vec3 temp = -vi - restitution * (vi.y * N);
+		//Vec3 temp = -vi - restitution * (vi.y * N);
 		Vec3 J = glm::inverse(K) * temp;
 
 		// 更新速度和角速度
@@ -148,7 +162,7 @@ void Ball::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 
 	// std::cout << x.x << " " << x.y << " " << x.z << "\n";
 	object->transform->SetPos(x);
-	object->transform->SetRotation(w);
+	object->transform->SetRotation(glm::normalize(q));
 	return;
 }
 

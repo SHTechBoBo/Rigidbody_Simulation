@@ -43,7 +43,7 @@ void Scene::FixedUpdate() {
         J_mem.push_back(std::vector<Vec3>());
         ri_mem.push_back(std::vector<Vec3>());
         objects[i]->mesh->v[1] -= 9.8f * objects[i]->mesh->fixed_delta_time;
-        objects[i]->mesh->v *= 0.98f;
+        objects[i]->mesh->v *= 0.999f;
         objects[i]->mesh->w *= 0.98f;
     }
 

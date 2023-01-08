@@ -9,7 +9,7 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
                     GL_STREAM_DRAW, GL_STATIC_DRAW,
                     true)
 {
-    auto bunny = makeMeshObject(GetFilePath("assets/bunny.obj").c_str(), Vec3f(0, 0, 0), 1);
+    auto bunny = makeMeshObject(GetFilePath("assets/ubunny.obj").c_str(), Vec3f(0, 0, 0), 1);
     auto ver = bunny->vertices;
     auto nor = bunny->normals;
     auto vi = bunny->v_indices;
@@ -28,9 +28,9 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
 
 	mass = 0;
 	I_ref = Mat3(0.0);
-	v = Vec3(0.0);
+	v = Vec3{ 5,0,0 };
 	w = Vec3(0.0);
-	restitution = 0.5f;
+	restitution = 1.0f;
 
 	std::vector<MeshVertex> vertices = this->vertices;
 	int vertices_num = vertices.size();
@@ -118,7 +118,7 @@ void Bunny::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3>& J_m
 		}
 		else
 		{
-			restitution = 0.5f;
+			restitution = 1.0f;
 		}
 
 		// R I RT
@@ -135,7 +135,21 @@ void Bunny::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3>& J_m
 		obj->mesh->GetNP(x + ri, P, N);
 
 		// restitution正常是0.5 轻微抖动时变为0
-		Vec3 temp = -vi - restitution * (vi.y * N);
+
+		Vec3 vi_n = glm::dot(vi, N) * N;
+		Vec3 vi_t = vi - vi_n;
+		float u_n = 0.8f;
+		float u_t = 1 - u_n * (1 + u_n) * glm::length(vi_n) / glm::length(vi_t);
+		if (u_t < 0) {
+			u_t = 0;
+		}
+
+		Vec3 vi_new = -u_n * vi_n + u_t * vi_t;
+
+
+		Vec3 temp = -vi +  restitution * vi_new;
+		// Vec3 temp = -vi - restitution * (vi.y * N);
+
 		Vec3 J = glm::inverse(K) * temp;
 
 		// 更新速度和角速度
@@ -144,6 +158,13 @@ void Bunny::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3>& J_m
 
 		//储存J，ri
 		J_mem.push_back(J / mass);
+
+		//Vec3 delta_w = inv_I * glm::cross(ri, J);
+		//if (glm::length(delta_w) < 4 * fixed_delta_time) {
+		//	delta_w = Vec3(0.0f);
+		//}
+		//ri_mem.push_back(delta_w);
+
 		ri_mem.push_back(inv_I * glm::cross(ri, J));
 	}
 
@@ -169,6 +190,7 @@ void Bunny::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 	x += fixed_delta_time * v;
 	Quat wq = Quat(w.x, w.y, w.z, 0);
 	Quat temp_q = wq * q;
+
 	q.x += 0.5f * fixed_delta_time * temp_q.x;
 	q.y += 0.5f * fixed_delta_time * temp_q.y;
 	q.z += 0.5f * fixed_delta_time * temp_q.z;
@@ -176,6 +198,11 @@ void Bunny::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 
 	// std::cout << x.x << " " << x.y << " " << x.z << "\n";
 	object->transform->SetPos(x);
-	object->transform->SetRotation(w);
+
+	/*std::cout << "w:" << w.x << " " << w.y << " " << w.z << "\n";
+	std::cout << "q:" << q.x << " " << q.y << " " << q.z << " " << q.w << "\n";
+	std::cout << "n_q:" << glm::normalize(q).x << " " << glm::normalize(q).y << " " << glm::normalize(q).z << " " << glm::normalize(q).w << "\n";*/
+	object->transform->SetRotation(glm::normalize(q));
+
 	return;
 }
