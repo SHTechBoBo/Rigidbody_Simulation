@@ -16,11 +16,14 @@ public:
 	Bunny& operator=(Bunny&&) = default;
 	virtual ~Bunny() override = default;
 
-
+	float mass;
+	Mat3 I_ref;
+	float restitution;
 
 	/// interfaces
 
 	virtual void FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem) override;
+	void CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem) override;
 
 private:
 

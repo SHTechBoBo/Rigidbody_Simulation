@@ -34,8 +34,10 @@ void Scene::Update() {
 迭代所有obj状态
 */
 void Scene::FixedUpdate() {
-    // 计算碰撞
+
     std::vector<std::vector<Vec3>> J_mem, ri_mem;
+
+    // 重力 + 速度衰减
     for (int i = 0; i < objects.size(); i++)
     {
         J_mem.push_back(std::vector<Vec3>());
@@ -44,6 +46,8 @@ void Scene::FixedUpdate() {
         objects[i]->mesh->v *= 0.98f;
         objects[i]->mesh->w *= 0.98f;
     }
+
+    // 计算碰撞
     for (int i = objects.size() - 1; i > 0; i--) {
         int size = J_mem[i].size();
         for (int j = i - 1; j >= 0; j--)
@@ -58,6 +62,8 @@ void Scene::FixedUpdate() {
             }
         }
     }
+
+    // 更新速度
     for (int i = 0; i < objects.size(); i++)
     {
         if (objects[i]->GetTag() != "Wall")
@@ -65,26 +71,6 @@ void Scene::FixedUpdate() {
             objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
         }
     }
-    //for (int i = 0; i < objects.size(); i++) {
-    //    J_mem.push_back(std::vector<Vec3>());
-    //    ri_mem.push_back(std::vector<Vec3>());
-    //    objects[i]->mesh->v[1] -= 9.8f * objects[i]->mesh->fixed_delta_time;
-    //    objects[i]->mesh->v *= 0.98f;
-    //    objects[i]->mesh->w *= 0.98f;
-    //    for (int j = 0; j < objects.size(); j++)
-    //    {
-    //        if (i != j && objects[i]->GetTag() != "Wall") {
-    //            objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
-    //        }
-    //    }
-    //}
-    //for (int i = 0; i < objects.size(); i++)
-    //{
-    //    if (objects[i]->GetTag() != "Wall")
-    //    {
-    //        objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
-    //    }
-    //}
 }
 
 void Scene::RenderUpdate() {
@@ -106,8 +92,9 @@ void Scene::RenderUpdate() {
 
 void Scene::Reset()
 {
-    while (objects.size() != 1)
-    {
-        objects.pop_back();
+    for (int i = 0; i < objects.size(); ++i) {
+        if (objects[i]->GetTag() != "Wall") {
+            objects.erase(objects.begin() + i);
+        }
     }
 }

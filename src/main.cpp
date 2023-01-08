@@ -79,15 +79,23 @@ int main() {
     // mesh primitives
     auto mesh_cube = std::make_shared<Mesh>(MeshPrimitiveType::cube);
 
-    auto mesh_wall = std::make_shared<Wall>(Vec3(10, 2, 5), Vec3(0, 0, 0));
+    auto mesh_wall = std::make_shared<Wall>(Vec3(10, 1, 5), Vec3(10, 0, 0));
     auto object_wall = scene.AddObject(mesh_wall,
-        Shader::shader_phong,
-        Transform(Vec3(0, 0, 0),
-            Quat(1, 0, 0, 0),
-            Vec3(1, 1, 1)));
+                                        Shader::shader_phong,
+                                        Transform(Vec3(0, 0, -5),
+                                            Quat(1, 0, 0, 0),
+                                            Vec3(1, 1, 1)));
     object_wall ->color = { Float(0.75), one, 0.5f };
     object_wall->SetTag("Wall");
 
+    auto mesh_wall1 = std::make_shared<Wall>(Vec3(10, 1, 10), Vec3(0, 0, 0));
+    auto object_wall1 = scene.AddObject(mesh_wall1,
+                                        Shader::shader_phong,
+                                        Transform(Vec3(0, -5, 0),
+                                            Quat(1, 0, 0, 0),
+                                            Vec3(1, 1, 1)));
+    object_wall1->color = { Float(0.75), one, 0.5f };
+    object_wall1->SetTag("Wall");
 
     //auto object_cube2 = scene.AddObject(mesh_cube,
     //    Shader::shader_phong,
@@ -144,7 +152,7 @@ int main() {
               Shader::shader_phong,
               Transform(Vec3(-1, 2, 0.3),
                   Quat(1, 0, 0, 0),
-                  Vec3(1, 1, 1)));
+                  Vec3(5, 5, 5)));
           bunny->color = { Float(0.25), Float(0.8), zero};
           r = true;
       }
