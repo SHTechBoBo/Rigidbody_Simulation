@@ -36,16 +36,25 @@ void Scene::Update() {
 void Scene::FixedUpdate() {
     // 计算碰撞
     std::vector<std::vector<Vec3>> J_mem, ri_mem;
-    for (int i = 0; i < objects.size(); i++) {
+    for (int i = 0; i < objects.size(); i++)
+    {
         J_mem.push_back(std::vector<Vec3>());
         ri_mem.push_back(std::vector<Vec3>());
         objects[i]->mesh->v[1] -= 9.8f * objects[i]->mesh->fixed_delta_time;
         objects[i]->mesh->v *= 0.98f;
         objects[i]->mesh->w *= 0.98f;
-        for (int j = 0; j < objects.size(); j++)
+    }
+    for (int i = objects.size() - 1; i > 0; i--) {
+        int size = J_mem[i].size();
+        for (int j = i - 1; j >= 0; j--)
         {
-            if (i != j && objects[i]->GetTag() != "Wall") {
+            if (objects[i]->GetTag() != "Wall") {
                 objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
+                if (size != J_mem[i].size()) {
+                    size = J_mem[i].size();
+                    J_mem[j].push_back(-J_mem[i].back());
+                    ri_mem[j].push_back(-ri_mem[i].back());
+                }
             }
         }
     }
@@ -56,18 +65,25 @@ void Scene::FixedUpdate() {
             objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
         }
     }
-    //for (auto& object_1 : objects) {
-    //    for (auto& object_2 : objects) {
-    //        if (object_1 != object_2 && object_1->GetTag() != "Wall") {
-    //            object_1->CollisionHandler(object_2, J_mem, ri_mem);
+    //for (int i = 0; i < objects.size(); i++) {
+    //    J_mem.push_back(std::vector<Vec3>());
+    //    ri_mem.push_back(std::vector<Vec3>());
+    //    objects[i]->mesh->v[1] -= 9.8f * objects[i]->mesh->fixed_delta_time;
+    //    objects[i]->mesh->v *= 0.98f;
+    //    objects[i]->mesh->w *= 0.98f;
+    //    for (int j = 0; j < objects.size(); j++)
+    //    {
+    //        if (i != j && objects[i]->GetTag() != "Wall") {
+    //            objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
     //        }
     //    }
     //}
-
-
-    // 更新位置
-    //for (auto& object : objects) {
-    //    object->FixedUpdate();
+    //for (int i = 0; i < objects.size(); i++)
+    //{
+    //    if (objects[i]->GetTag() != "Wall")
+    //    {
+    //        objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
+    //    }
     //}
 }
 

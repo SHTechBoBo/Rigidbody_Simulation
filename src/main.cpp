@@ -79,7 +79,7 @@ int main() {
     // mesh primitives
     auto mesh_cube = std::make_shared<Mesh>(MeshPrimitiveType::cube);
 
-    auto mesh_wall = std::make_shared<Wall>(Vec3(10, 0.1, 5), Vec3(0, 0, 0));
+    auto mesh_wall = std::make_shared<Wall>(Vec3(10, 2, 5), Vec3(0, 0, 0));
     auto object_wall = scene.AddObject(mesh_wall,
         Shader::shader_phong,
         Transform(Vec3(0, 0, 0),

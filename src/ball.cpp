@@ -162,6 +162,10 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 		if (abs(vi.y + 9.8f * fixed_delta_time) < 4.0f * fixed_delta_time) {
 			restitution = 0;
 		}
+		else
+		{
+			restitution = 0.5f;
+		}
 		
 		// R I RT
 		Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
@@ -185,8 +189,8 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 		//w += inv_I * glm::cross(ri, J);
 
 		//¥¢¥ÊJ£¨ri
-		J_mem.push_back(J);
-		ri_mem.push_back(ri);
+		J_mem.push_back(J / mass);
+		ri_mem.push_back(inv_I * glm::cross(ri, J));
 	}
 
 }
@@ -198,8 +202,8 @@ void Ball::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 
 	for (int i = 0; i < J_mem.size(); i++)
 	{
-		v += J_mem[i] / mass;
-		w += inv_I * glm::cross(ri_mem[i], J_mem[i]);
+		v += J_mem[i];
+		w += ri_mem[i];
 	}
 
 	Vec3 x = object->transform->position;
