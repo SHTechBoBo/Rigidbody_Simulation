@@ -142,7 +142,8 @@ void Wall::GetNP(Vec3 vertex, Vec3& P, Vec3& N)
             }
         }
     }
-    P = vertices[6 * close_surface_id].position;
+
     N = vertices[6 * close_surface_id].normal;
+    P = glm::dot(vertices[6 * close_surface_id].position - vertex, N) * N + vertex;
     return;
 }

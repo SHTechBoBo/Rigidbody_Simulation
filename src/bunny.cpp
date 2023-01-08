@@ -28,8 +28,8 @@ Bunny::Bunny():Mesh(std::vector<MeshVertex>(),
 
 	mass = 0;
 	I_ref = Mat3(0.0);
-	v = Vec3{ 5,0,0 };
-	w = Vec3(0.0);
+	v = Vec3{ 10,0,0 };
+	w = Vec3{40,0,0};
 	restitution = 1.0f;
 
 	std::vector<MeshVertex> vertices = this->vertices;
