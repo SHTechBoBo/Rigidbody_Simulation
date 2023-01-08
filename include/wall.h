@@ -8,7 +8,7 @@ public:
 
 	/// constructor
 
-	Wall(Vec3 scale, Vec3 rotate);
+	Wall(Vec3 pos, Vec3 scale, Vec3 rotate);
 
 	Wall(const Wall&) = default;
 	Wall(Wall&&) = default;

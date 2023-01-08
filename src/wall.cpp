@@ -4,7 +4,7 @@
 #include "transform.h"
 #include <random>
 
-Wall::Wall(Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
+Wall::Wall(Vec3 pos, Vec3 scale, Vec3 rotate) : Mesh(std::vector<MeshVertex>(),
     std::vector<UVec3>(),
     GL_STREAM_DRAW, GL_STATIC_DRAW,
     true)
