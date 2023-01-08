@@ -90,5 +90,8 @@ void Scene::RenderUpdate() {
 
 void Scene::Reset()
 {
-    objects.clear();
+    while (objects.size() != 1)
+    {
+        objects.pop_back();
+    }
 }

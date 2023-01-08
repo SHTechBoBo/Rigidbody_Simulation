@@ -151,6 +151,10 @@ int main() {
       if (!Input::GetKey(KeyCode::R))
           r = false;
 
+      //Reset
+      if (Input::GetKey(KeyCode::Q))
+          scene.Reset();
+
       /// fixed update
       //物体更新位置
       for (unsigned i = 0; i < Time::fixed_update_times_this_frame; ++i) {
