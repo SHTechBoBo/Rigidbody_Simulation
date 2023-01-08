@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.h"
+#include "time_system.h"
 
 enum class MeshPrimitiveType {
   cube,
@@ -65,9 +66,15 @@ class Mesh {
 
   bool is_bidirectional;
 
+  Vec3 v;
+  Vec3 w;
+
   GLuint vao;
   GLuint vbo;
   GLuint ebo;
+
+  static constexpr unsigned simulation_steps_per_fixed_update_time = 1;
+  static constexpr Float fixed_delta_time = Time::fixed_delta_time / Float(simulation_steps_per_fixed_update_time);
 
 
   void SetObject(const std::shared_ptr<Object>& new_object);

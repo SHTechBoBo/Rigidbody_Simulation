@@ -126,11 +126,11 @@ int main() {
           auto mesh_ball = std::make_shared<Ball>();
           auto ball = scene.AddObject(mesh_ball,
                                     Shader::shader_phong,
-                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 2, 0),
+                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 4, float(rand() % 100) / 100 - 0.5f),
                                         Quat(1, 0, 0, 0),
                                         Vec3(1, 1, 1)));
           ball->SetTag("Ball");
-          ball->color = { Float(0.75), one, zero };
+          ball->color = { float(rand() % 100) / 100, float(rand() % 100) / 100, float(rand() % 100) / 100 };
           b = true;
        }
       if (!Input::GetKey(KeyCode::B))

@@ -27,7 +27,7 @@ class Scene {
   std::shared_ptr<Object> AddObject(const std::shared_ptr<Mesh>& mesh,
                                     const std::shared_ptr<Shader>& shader,
                                     const Transform& transform);
-
+  void Reset();
   void Update();
   void FixedUpdate();
   void RenderUpdate();

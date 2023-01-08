@@ -193,10 +193,6 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 
 void Ball::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem)
 {
-	v[1] -= 9.8f * fixed_delta_time;
-
-	v *= 0.98f;
-	w *= 0.98f;
 	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
 	Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
 

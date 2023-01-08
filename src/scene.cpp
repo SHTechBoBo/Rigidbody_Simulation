@@ -39,6 +39,9 @@ void Scene::FixedUpdate() {
     for (int i = 0; i < objects.size(); i++) {
         J_mem.push_back(std::vector<Vec3>());
         ri_mem.push_back(std::vector<Vec3>());
+        objects[i]->mesh->v[1] -= 9.8f * objects[i]->mesh->fixed_delta_time;
+        objects[i]->mesh->v *= 0.98f;
+        objects[i]->mesh->w *= 0.98f;
         for (int j = 0; j < objects.size(); j++)
         {
             if (i != j && objects[i]->GetTag() != "Wall") {
@@ -83,4 +86,9 @@ void Scene::RenderUpdate() {
       object->mesh->DrawTriangles();
     }
   }
+}
+
+void Scene::Reset()
+{
+    objects.clear();
 }

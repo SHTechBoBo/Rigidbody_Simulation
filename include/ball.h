@@ -18,8 +18,6 @@ class Ball : public Mesh {
 
   float mass;
   Mat3 I_ref;
-  Vec3 v;
-  Vec3 w;
   float restitution;
 
   /// interfaces
@@ -30,8 +28,6 @@ class Ball : public Mesh {
 
 
  private:
-  static constexpr unsigned simulation_steps_per_fixed_update_time = 1;
-  static constexpr Float fixed_delta_time = Time::fixed_delta_time / Float(simulation_steps_per_fixed_update_time);
 
   std::vector<Vec3> world_velocities;
   std::vector<Vec3> world_accelerations;
