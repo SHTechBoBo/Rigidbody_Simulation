@@ -20,6 +20,7 @@ class Ball : public Mesh {
   Mat3 I_ref;
   Vec3 v;
   Vec3 w;
+  float restitution;
 
   /// interfaces
   void CollisionHandler(std::shared_ptr<Object> obj);

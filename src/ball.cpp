@@ -11,7 +11,8 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 	mass = 0;
 	I_ref = Mat3(0.0);
 	v = Vec3(0.0);
-	w = Vec3(0.0);
+	w = Vec3(0.0); 
+	restitution = 0.5f;
 
 	for (int i = 0; i < vertices_num; i++) {
 		// 一个三角形认为质量是1
@@ -122,6 +123,11 @@ void Ball::CollisionDetect(std::shared_ptr<Mesh> mesh) {
 
 
 void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
+	// 重力加速度
+	v[1] -= 9.8f * fixed_delta_time;
+
+	v *= 0.98f;
+	w *= 0.98f;
 
 	// 旋转矩阵
 	Mat3 R = glm::mat3_cast(object->transform->rotation) * Mat3(1.0);
@@ -141,7 +147,6 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
 		Vec3 vi = v + glm::cross(w, ri);
 		
 		// 有没有陷入其他物体
-
 		obj->mesh->GetNP(xi, P, N);
 		if (glm::dot(xi - P, N) < 0 && glm::dot(vi, N) < 0) {
 			sum_ri += ri;
@@ -152,6 +157,11 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
 	if (sum != 0) {
 		Vec3 ri = sum_ri / sum;
 		Vec3 vi = v + glm::cross(w, ri);
+
+		// 防止抖动
+		if (abs(vi.y + 9.8f * fixed_delta_time) < 4.0f * fixed_delta_time) {
+			restitution = 0;
+		}
 		
 		// R I RT
 		Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
@@ -164,9 +174,10 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
 		K[1][1] += 1.0 / mass;
 		K[2][2] += 1.0 / mass;
 
-		// TODO: restitution 
 		obj->mesh->GetNP(x + ri, P, N);
-		Vec3 temp = -vi - 0.5f * (vi.y * N);
+
+		// restitution正常是0.5 轻微抖动时变为0
+		Vec3 temp = -vi - restitution * (vi.y * N);
 		Vec3 J = glm::inverse(K) * temp;
 
 		// 更新速度和角速度
@@ -178,12 +189,6 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj) {
 
 void Ball::FixedUpdate()
 {
-	v[1] -= 9.8f * fixed_delta_time;
-	// 重力加速度
-
-
-	v *= 0.999f;
-	w *= 0.98f;
 
 	Vec3 x = object->transform->position;
 	Quat q = object->transform->rotation;
