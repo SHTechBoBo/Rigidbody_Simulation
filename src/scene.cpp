@@ -50,9 +50,22 @@ void Scene::FixedUpdate() {
     // 计算碰撞
     for (int i = objects.size() - 1; i > 0; i--) {
         int size = J_mem[i].size();
+
         for (int j = i - 1; j >= 0; j--)
         {
-            if (objects[i]->GetTag() != "Wall") {
+            if (objects[i]->GetTag() == "Ball") {
+
+
+                //if (objects[j]->GetTag() == "Ball") {
+                //    // aabb判断
+                //    if (!objects[i]->aabb.intersect(objects[j]->aabb)) {
+                //        // 如果aabb都没碰到
+                //        std::cout << "no";
+                //        continue;
+                //    }
+                //}
+                // 如果aabb碰到了 再判断碰撞信息
+
                 objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
                 if (size != J_mem[i].size()) {
                     size = J_mem[i].size();
@@ -69,6 +82,8 @@ void Scene::FixedUpdate() {
         if (objects[i]->GetTag() != "Wall")
         {
             objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
+            //更新aabb
+            objects[i]->aabb = AABB(objects[i]->transform->position);
         }
     }
 }

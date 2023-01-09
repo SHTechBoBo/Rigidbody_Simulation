@@ -242,6 +242,7 @@ void Mesh::DrawTriangles() const {
   glBindVertexArray(0);
 }
 
+
 /*virtual*/ 
 void Mesh::FixedUpdate(std::vector<Vec3>& J_mem, std::vector<Vec3>& ri_mem) { }
 //void Mesh::CollisionDetect(std::shared_ptr<Mesh> mesh) {};

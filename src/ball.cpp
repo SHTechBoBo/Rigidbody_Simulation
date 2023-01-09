@@ -14,6 +14,7 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 	w = Vec3(0.0); 
 	restitution = 1.0f;
 
+
 	for (int i = 0; i < vertices_num; i++) {
 		// 一个三角形认为质量是1
 		mass += 1;
@@ -48,7 +49,7 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 
 void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem) {
 
-	// 初筛
+	//// 初筛
 	if (obj->GetTag() == "Ball") {
 		if (glm::distance(object->transform->position, obj->transform->position) > 4) {
 			return;
@@ -94,6 +95,7 @@ void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_m
 		//	restitution = 1.0f;
 		//}
 		//
+
 		// R I RT
 		Mat3 inv_I = R * glm::inverse(I_ref) * glm::transpose(R);
 
@@ -174,3 +176,4 @@ void Ball::GetNP(Vec3 vertex, Vec3& P, Vec3& N)
 	P = len * N + x;
 	return;
 }
+
