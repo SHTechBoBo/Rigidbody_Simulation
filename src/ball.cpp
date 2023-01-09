@@ -50,11 +50,11 @@ Ball::Ball() : Mesh(MeshPrimitiveType::sphere) {
 void Ball::CollisionHandler(std::shared_ptr<Object> obj, std::vector<Vec3> & J_mem, std::vector<Vec3> & ri_mem) {
 
 	//// ³õÉ¸
-	if (obj->GetTag() == "Ball") {
-		if (glm::distance(object->transform->position, obj->transform->position) > 4) {
-			return;
-		}
-	}
+	//if (obj->GetTag() == "Ball") {
+	//	if (glm::distance(object->transform->position, obj->transform->position) > 2) {
+	//		return;
+	//	}
+	//}
 
 
 	// Ðý×ª¾ØÕó

@@ -25,7 +25,7 @@ int main() {
   //生成标识
   bool b = false;
   bool r = false;
-
+  int id = 1;
 
   /// setup window
   GLFWwindow* window;
@@ -76,23 +76,58 @@ int main() {
     scene.light_position = { 0, 3, -10 };
     scene.light_color = Vec3(1, 1, 1) * Float(1.125);
 
-    auto mesh_wall = std::make_shared<Wall>(Vec3(0, 0, 0), Vec3(10, 1, 10), Vec3(0, 0, 0));
-    auto object_wall = scene.AddObject(mesh_wall,
-        Shader::shader_phong,
-        Transform(Vec3(0, 0, 0),
-            Quat(1, 0, 0, 0),
-            Vec3(1, 1, 1)));
-    object_wall->color = { Float(0.75), one, 0.5f };
-    object_wall->SetTag("Wall");
+    if (id == 0)
+    {
+        auto mesh_wall = std::make_shared<Wall>(Vec3(0, 0, 10), Vec3(10, 1, 10), Vec3(0, 0, 0));
+        auto object_wall = scene.AddObject(mesh_wall,
+            Shader::shader_phong,
+            Transform(Vec3(0, 0, 0),
+                Quat(1, 0, 0, 0),
+                Vec3(1, 1, 1)));
+        object_wall->color = { Float(0.75), one, 0.5f };
+        object_wall->SetTag("Wall");
 
-    auto mesh_wall1 = std::make_shared<Wall>(Vec3(5, 0, 0), Vec3(1, 10, 10), Vec3(0, 0, 0));
-    auto object_wall1 = scene.AddObject(mesh_wall1,
-        Shader::shader_phong,
-        Transform(Vec3(0, 0, 0),
-            Quat(1, 0, 0, 0),
-            Vec3(1, 1, 1)));
-    object_wall1->color = { Float(0.75), one, 0.5f };
-    object_wall1->SetTag("Wall");
+        auto mesh_wall1 = std::make_shared<Wall>(Vec3(5, -2, 10), Vec3(1, 10, 10), Vec3(0, 0, 0));
+        auto object_wall1 = scene.AddObject(mesh_wall1,
+            Shader::shader_phong,
+            Transform(Vec3(0, 0, 0),
+                Quat(1, 0, 0, 0),
+                Vec3(1, 1, 1)));
+        object_wall1->color = { Float(0.75), one, 0.5f };
+        object_wall1->SetTag("Wall");
+    }
+    else if (id == 1)
+    {
+        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, 2), Vec3(10, 1, 5), Vec3(0, 0, 0));
+        auto object_wall = scene.AddObject(mesh_wall,
+            Shader::shader_phong,
+            Transform(Vec3(0, 0, 0),
+                Quat(1, 0, 0, 0),
+                Vec3(1, 1, 1)));
+        object_wall->color = { Float(0.75), one, 0.5f };
+        object_wall->SetTag("Wall");
+
+        auto mesh_wall1 = std::make_shared<Wall>(Vec3(0, 0, 10), Vec3(10, 1, 10), Vec3(-60, 0, 0));
+        auto object_wall1 = scene.AddObject(mesh_wall1,
+            Shader::shader_phong,
+            Transform(Vec3(0, 0, 0),
+                Quat(1, 0, 0, 0),
+                Vec3(1, 1, 1)));
+        object_wall1->color = { Float(0.75), one, 0.5f };
+        object_wall1->SetTag("Wall");
+    }
+    else if (id == 2)
+    {
+        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, 2), Vec3(100, 1, 100), Vec3(0, 0, 0));
+        auto object_wall = scene.AddObject(mesh_wall,
+            Shader::shader_phong,
+            Transform(Vec3(0, 0, 0),
+                Quat(1, 0, 0, 0),
+                Vec3(1, 1, 1)));
+        object_wall->color = { Float(0.75), one, 0.5f };
+        object_wall->SetTag("Wall");
+
+    }
 
 
     // loop until the user closes the window
@@ -114,7 +149,7 @@ int main() {
           auto mesh_ball = std::make_shared<Ball>();
           auto ball = scene.AddObject(mesh_ball,
                                     Shader::shader_phong,
-                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 4, float(rand() % 100) / 100 - 0.5f),
+                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 4, float(rand() % 100) / 100 - 0.5f + 10),
                                         Quat(1, 0, 0, 0),
                                         Vec3(1, 1, 1)));
           ball->SetTag("Ball");

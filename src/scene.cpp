@@ -56,15 +56,19 @@ void Scene::FixedUpdate() {
             if (objects[i]->GetTag() == "Ball") {
 
 
-                //if (objects[j]->GetTag() == "Ball") {
-                //    // aabb判断
-                //    if (!objects[i]->aabb.intersect(objects[j]->aabb)) {
-                //        // 如果aabb都没碰到
-                //        std::cout << "no";
-                //        continue;
-                //    }
-                //}
+                if (objects[j]->GetTag() == "Ball") {
+                    // aabb判断
+                    if (!objects[i]->aabb.intersect(objects[j]->aabb)) {
+                        // 如果aabb都没碰到
+                        //std::cout << "no";
+                        continue;
+                    }
+                }
                 // 如果aabb碰到了 再判断碰撞信息
+                // if(objects[j]->GetTag() == "Ball")
+                //     if (glm::distance(objects[i]->transform->position, objects[j]->transform->position) > 2) {
+                //         continue;
+                //     }
 
                 objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
                 if (size != J_mem[i].size()) {
@@ -84,6 +88,12 @@ void Scene::FixedUpdate() {
             objects[i]->FixedUpdate(J_mem[i], ri_mem[i]);
             //更新aabb
             objects[i]->aabb = AABB(objects[i]->transform->position);
+        }
+    }
+
+    for (int i = 0; i < objects.size(); ++i) {
+        if (objects[i]->GetTag() == "Ball" && objects[i]->transform->position.y < -10.0f) {
+            objects.erase(objects.begin() + i);
         }
     }
 }
