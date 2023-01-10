@@ -54,8 +54,8 @@ void Scene::FixedUpdate() {
         for (int j = i - 1; j >= 0; j--)
         {
             if (objects[i]->GetTag() == "Ball") {
-
-
+            
+            
                 if (objects[j]->GetTag() == "Ball") {
                     // aabbÅÐ¶Ï
                     if (!objects[i]->aabb.intersect(objects[j]->aabb)) {
@@ -70,6 +70,15 @@ void Scene::FixedUpdate() {
                 //         continue;
                 //     }
 
+                objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
+                if (size != J_mem[i].size()) {
+                    size = J_mem[i].size();
+                    J_mem[j].push_back(-J_mem[i].back());
+                    ri_mem[j].push_back(-ri_mem[i].back());
+                }
+            }
+            else
+            {
                 objects[i]->CollisionHandler(objects[j], J_mem[i], ri_mem[i]);
                 if (size != J_mem[i].size()) {
                     size = J_mem[i].size();

@@ -25,8 +25,9 @@ int main() {
   //生成标识
   bool b = false;
   bool r = false;
-  int id = 1;
-
+  int id = 0;
+  std::cout << "please choose scene[0:2]:";
+  std::cin >> id;
   /// setup window
   GLFWwindow* window;
   {
@@ -98,7 +99,7 @@ int main() {
     }
     else if (id == 1)
     {
-        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, 2), Vec3(10, 1, 5), Vec3(0, 0, 0));
+        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, -8), Vec3(10, 1, 5), Vec3(0, 0, 0));
         auto object_wall = scene.AddObject(mesh_wall,
             Shader::shader_phong,
             Transform(Vec3(0, 0, 0),
@@ -107,7 +108,7 @@ int main() {
         object_wall->color = { Float(0.75), one, 0.5f };
         object_wall->SetTag("Wall");
 
-        auto mesh_wall1 = std::make_shared<Wall>(Vec3(0, 0, 10), Vec3(10, 1, 10), Vec3(-60, 0, 0));
+        auto mesh_wall1 = std::make_shared<Wall>(Vec3(0, 0, 0), Vec3(10, 1, 10), Vec3(-60, 0, 0));
         auto object_wall1 = scene.AddObject(mesh_wall1,
             Shader::shader_phong,
             Transform(Vec3(0, 0, 0),
@@ -118,7 +119,7 @@ int main() {
     }
     else if (id == 2)
     {
-        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, 2), Vec3(100, 1, 100), Vec3(0, 0, 0));
+        auto mesh_wall = std::make_shared<Wall>(Vec3(0, -4, 0), Vec3(10, 1, 10), Vec3(0, 0, 0));
         auto object_wall = scene.AddObject(mesh_wall,
             Shader::shader_phong,
             Transform(Vec3(0, 0, 0),
@@ -137,6 +138,7 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
       Input::Update();
       Time::Update();
+      //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       /// terminate
@@ -149,7 +151,7 @@ int main() {
           auto mesh_ball = std::make_shared<Ball>();
           auto ball = scene.AddObject(mesh_ball,
                                     Shader::shader_phong,
-                                    Transform(Vec3(float(rand() % 100)/100 - 0.5f, 4, float(rand() % 100) / 100 - 0.5f + 10),
+                                    Transform(Vec3(4 * (float(rand() % 100) / 100 - 0.5f), 4 + float(rand() % 100) / 100 - 0.5f, 4 * (float(rand() % 100) / 100 - 0.5f)),
                                         Quat(1, 0, 0, 0),
                                         Vec3(1, 1, 1)));
           ball->SetTag("Ball");
@@ -165,7 +167,7 @@ int main() {
           auto mesh_bunny = std::make_shared<Bunny>();
           auto bunny = scene.AddObject(mesh_bunny,
               Shader::shader_phong,
-              Transform(Vec3(2, 2, 0.3),
+              Transform(Vec3(2, 2, 10.3),
                   Quat(1, 0, 0, 0),
                   Vec3(1, 1, 1)));
           bunny->color = { Float(0.25), Float(0.8), zero};
